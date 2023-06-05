@@ -1,15 +1,19 @@
 import XCTest
 @testable import Maccy
 
-class HistoryItemTests: XCTestCase {
+class HistoryItemTests: XCTestCase {  let savedIgnoredApps = UserDefaults.standard.ignoredApps
+  let savedMaxMenuItemLength = UserDefaults.standard.maxMenuItemLength
+
   override func setUp() {
     CoreDataManager.inMemory = true
+    UserDefaults.standard.maxMenuItemLength = 50
     super.setUp()
   }
 
   override func tearDown() {
     super.tearDown()
     CoreDataManager.inMemory = false
+    UserDefaults.standard.maxMenuItemLength = savedMaxMenuItemLength
   }
 
   func testTitleForString() {
@@ -22,14 +26,14 @@ class HistoryItemTests: XCTestCase {
     let title = String(repeating: "a", count: 49)
     let item = historyItem(title)
     XCTAssertEqual(item.title, title)
-    XCTAssertEqual(item.title.count, 49)
+    XCTAssertEqual(item.title?.count, 49)
   }
 
   func testTitleOfMaxLength() {
     let title = String(repeating: "a", count: 50)
     let item = historyItem(title)
     XCTAssertEqual(item.title, title)
-    XCTAssertEqual(item.title.count, 50)
+    XCTAssertEqual(item.title?.count, 50)
   }
 
   func testTitleLongerThanMaxLength() {
@@ -37,7 +41,7 @@ class HistoryItemTests: XCTestCase {
     let title = String(repeating: "a", count: 51)
     let item = historyItem(title)
     XCTAssertEqual(item.title, trimmedTitle)
-    XCTAssertEqual(item.title.count, 53)
+    XCTAssertEqual(item.title?.count, 53)
   }
 
   func testTitleWithWhitespaces() {
@@ -50,6 +54,21 @@ class HistoryItemTests: XCTestCase {
     let title = "\nfoo\nbar\n"
     let item = historyItem(title)
     XCTAssertEqual(item.title, "foo⏎bar")
+  }
+
+  func testTitleWithRTF() {
+    let rtf = NSAttributedString(string: "foo").rtf(
+      from: NSRange(0...2),
+      documentAttributes: [:]
+    )
+    let item = historyItem(rtf, .rtf)
+    XCTAssertEqual(item.title, "foo")
+  }
+
+  func testTitleWithHTML() {
+    let html = "<a href='#'>foo</a>".data(using: .utf8)
+    let item = historyItem(html, .html)
+    XCTAssertEqual(item.title, "foo")
   }
 
   func testImage() {
@@ -98,6 +117,12 @@ class HistoryItemTests: XCTestCase {
   private func historyItem(_ value: String?) -> HistoryItem {
     let content = HistoryItemContent(type: NSPasteboard.PasteboardType.string.rawValue,
                                      value: value?.data(using: .utf8))
+    return HistoryItem(contents: [content])
+  }
+
+  private func historyItem(_ data: Data?, _ type: NSPasteboard.PasteboardType) -> HistoryItem {
+    let content = HistoryItemContent(type: type.rawValue,
+                                     value: data)
     return HistoryItem(contents: [content])
   }
 

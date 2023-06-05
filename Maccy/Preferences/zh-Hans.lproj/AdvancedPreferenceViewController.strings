@@ -5,6 +5,9 @@
 /* Class = "NSTextFieldCell"; title = "defaults write org.p0deje.Maccy ignoreEvents true\n# copy data\ndefaults write org.p0deje.Maccy ignoreEvents false"; ObjectID = "LFh-6b-GFi"; */
 "LFh-6b-GFi.title" = "defaults write org.p0deje.Maccy ignoreEvents true\n# 执行上述命令后再进行复制，复制完成后执行\ndefaults write org.p0deje.Maccy ignoreEvents false";
 
+/* Class = "NSTextFieldCell"; title = "You can also click the menu icon with ⌥ pressed. To ignore only the next copy, click with ⌥⇧."; ObjectID = "lwS-2p-WwS"; */
+"lwS-2p-WwS.title" = "您也可以按下 ⌥ 单击菜单图标。 要仅忽略下一个副本，请单击 ⌥⇧。";
+
 /* Class = "NSButtonCell"; title = "Turn off"; ObjectID = "RA0-eh-Udt"; */
 "RA0-eh-Udt.title" = "暂停";
 
@@ -19,3 +22,9 @@
 
 /* Class = "NSTextFieldCell"; title = "Automatically remove all unpinned items before quitting the application."; ObjectID = "LW1-8W-pFI"; */
 "LW1-8W-pFI.title" = "退出应用时仅保留已固定的项目。";
+
+/* Class = "NSButtonCell"; title = "Clear the system clipboard too"; ObjectID = "WSh-1o-SG8"; */
+"WSh-1o-SG8.title" = "也清除系统剪贴板";
+
+/* Class = "NSTextFieldCell"; title = "When enabled, clearing the history would also clear the current system clipboard."; ObjectID = "SJh-zS-Osw" */
+"SJh-zS-Osw.title" = "启用后，清除历史记录也会清除当前系统剪贴板。";
